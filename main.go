@@ -20,6 +20,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 var (
@@ -27,12 +28,18 @@ var (
 )
 
 type Config struct {
-	MaxProcs int `json:"go_max_procs"`
+	Hostname string `json:"hostname"`
+	MaxProcs int    `json:"go_max_procs"`
 }
 
 func main() {
 	flag.StringVar(&configFile, "config-file", "", "The configuration file")
 	flag.Parse()
+
+	hostname, err := os.Hostname()
+	if err != nil {
+		log.Fatal("Error getting hostname")
+	}
 
 	log.Println("Starting the hello-habitat service...")
 
@@ -47,8 +54,10 @@ func main() {
 		log.Fatalf("Error loading configuration file: %v", err)
 	}
 
+	config.Hostname = hostname
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello Habitat!")
+		fmt.Fprintf(w, "Hello Habitat!\n")
 	})
 
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +72,7 @@ func main() {
 			return
 		}
 		w.Write(data)
+		fmt.Fprintf(w, "\n")
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

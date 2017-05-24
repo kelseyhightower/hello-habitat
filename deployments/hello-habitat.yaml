@@ -28,7 +28,7 @@ spec:
             periodSeconds: 10
           resources:
             requests:
-              cpu: 1000m
+              cpu: 500m
               memory: 256Mi
         - name: habitat-config-sidecar
           image: "gcr.io/hightowerlabs/habitat-config-sidecar:0.0.4"
@@ -37,7 +37,7 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 16Mi
+              memory: 256Mi
           volumeMounts:
             - name: "hello-habitat-config"
               mountPath: "/etc/habitat"
