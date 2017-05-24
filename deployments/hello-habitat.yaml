@@ -1,0 +1,47 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: hello-habitat
+  name: hello-habitat
+spec:
+  template:
+    metadata:
+      labels:
+        app: hello-habitat
+    spec:
+      containers:
+        - name: hello-habitat
+          image: "gcr.io/hightowerlabs/hello-habitat:0.0.1-20170524080850"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: liveness-port
+              containerPort: 9631
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /services/hello-habitat/default/health
+              port: 9631
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 256Mi
+        - name: habitat-config-sidecar
+          image: "gcr.io/hightowerlabs/habitat-config-sidecar:0.0.4"
+          args:
+            - "--service-group=hello-habitat.default"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 16Mi
+          volumeMounts:
+            - name: "hello-habitat-config"
+              mountPath: "/etc/habitat"
+      volumes:
+        - name: "hello-habitat-config"
+          configMap:
+            name: "hello-habitat"

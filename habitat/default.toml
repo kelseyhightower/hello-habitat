@@ -1,0 +1,4 @@
+go_max_procs = 0
+
+[server]
+http = 8080
