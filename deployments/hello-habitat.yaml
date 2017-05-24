@@ -15,7 +15,7 @@ spec:
           image: "gcr.io/hightowerlabs/hello-habitat:0.0.1-20170524080850"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
             - name: liveness-port
               containerPort: 9631
