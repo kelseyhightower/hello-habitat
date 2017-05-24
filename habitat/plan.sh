@@ -1,7 +1,7 @@
 pkg_name="hello-habitat"
-pkg_description="Hello habitat application."
+pkg_description="Hello Habitat demo application."
 pkg_origin="kelseyhightower"
-pkg_version="0.0.1"
+pkg_version="0.1.0"
 pkg_license=('Apache-2.0')
 pkg_upstream_url="https://github.com/kelseyhightower/hello-habitat"
 
